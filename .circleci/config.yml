@@ -12,14 +12,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install yarn
-          command: curl -o- -L https://yarnpkg.com/install.sh | bash
-      - run:
-          name: Download node
-          command: curl -o node.pkg -L https://nodejs.org/dist/v10.16.0/node-v10.16.0.pkg 
+          name: Install nvm
+          command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
       - run:
           name: Install node
-          command: sudo installer -pkg node.pkg -target /
+          command: nvm install --lts
+      - run:
+          name: Install yarn
+          command: curl -o- -L https://yarnpkg.com/install.sh | bash
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
