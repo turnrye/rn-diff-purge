@@ -2,12 +2,12 @@
 #
 # Check https://circleci.com/docs/2.0/ios-migrating-from-1-2/ for more details
 #
-version: 2
+version: 2.1
 jobs:
   build:
 
     macos:
-      xcode: "8.3.3"
+      xcode: "10.2.1"
 
     steps:
       - checkout
@@ -22,7 +22,7 @@ jobs:
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
       - run:
           name: Install node
-          command: nvm install --lts
+          command: nvm install node --lts
       - run:
           name: Install yarn
           command: curl -o- -L https://yarnpkg.com/install.sh | bash
