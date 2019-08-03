@@ -8,22 +8,30 @@ jobs:
 
     macos:
       xcode: "10.2.1"
+    filters:
+      # Both of the following conditions must be included!
+      # Ignore any commit on any branch by default.
+      # branches:
+      #   only: master
+      # Only act on version tags.
+      # tags:
+      #   only: /v[0-9]+(\.[0-9]+)*(\-rc(\.[0-9]+)?)?/
 
     steps:
       - checkout
       - run:
-          name: Install nvm
-          command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-      - run:
-          name: Update shell
+          name: Setup local environment
           command: |
-            export NVM_DIR="$HOME/.nvm"
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            export NVM_DIR="$HOME/.nvm" >> $BASH_ENV
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+            source $BASH_ENV
             nvm install node --lts
-      - run:
-          name: Install yarn
-          command: curl -o- -L https://yarnpkg.com/install.sh | bash
+            git config --global user.email "turnrye@users.noreply.github.com"
+            git config --global user.name "turnrye Deployment Script"
+            echo "machine github.com login turnrye password $GITHUB_TOKEN" > ~/.netrc
+            curl -o- -L https://yarnpkg.com/install.sh | bash
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
